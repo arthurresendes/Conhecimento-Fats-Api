@@ -44,6 +44,19 @@ async def ver_user_id(user_id: int):
             return {"Usuario": i}
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario não encontrado")
 
+class Person(BaseModel):
+    name: str
+    email: str
+    password: str
+
+class PersonOut(BaseModel):
+    name: str
+    email: str
+
+@app.post("/person", response_model=PersonOut, status_code=status.HTTP_201_CREATED,)
+async def adicionar_person(person: Person):
+    return person
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app",host="127.0.0.1", port=8000, log_level='info', reload=True)
