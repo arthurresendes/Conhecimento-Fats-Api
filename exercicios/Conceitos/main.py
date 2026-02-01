@@ -30,7 +30,7 @@ async def inserir_user(user: User):
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Idade tem que ser maior que 0")
 
-@app.get("/users", status_code=status.HTTP_200_OK)
+@app.get("/usuario", status_code=status.HTTP_200_OK)
 async def ver_users():
     return {"Usuarios": lista_user}
 
