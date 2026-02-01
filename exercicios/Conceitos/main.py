@@ -30,6 +30,10 @@ async def inserir_user(user: User):
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Idade tem que ser maior que 0")
 
+@app.get("/users", status_code=status.HTTP_200_OK)
+async def ver_users():
+    return {"Usuarios": lista_user}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app",host="127.0.0.1", port=8000, log_level='info', reload=True)
