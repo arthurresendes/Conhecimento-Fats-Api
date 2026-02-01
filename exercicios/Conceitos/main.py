@@ -71,7 +71,7 @@ async def atualizar_user(user_id: int, user_atualizado: User):
             new_user = {"Id": user_id, "Informações": user_atualizado}
             lista_user[indice] = new_user
             return
-    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Id não encontrado")
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id não encontrado")
 
 @app.delete("/usuario/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def deletar_user(user_id: int):
@@ -79,19 +79,18 @@ async def deletar_user(user_id: int):
         if usuario["Id"] == user_id:
             lista_user.pop(indice)
             return
-    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Id não encontrado")
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id não encontrado")
 
-
-class Email(BaseModel):
+class EmailUpdate(BaseModel):
     email:str
 
-@app.put("usuario/email/{ùser_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def atualizar_email(user_id: int,email_user: Email):
+@app.put("/usuario/email/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def atualizar_email(user_id: int,email_user: EmailUpdate):
     for usuario in lista_user:
         if usuario["Id"] == user_id:
             usuario["Informações"].email = email_user.email
             return
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Id não encontrado")
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id não encontrado")
 
 if __name__ == "__main__":
     import uvicorn
