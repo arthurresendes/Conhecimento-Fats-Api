@@ -15,6 +15,26 @@ async def ver_item_especifico(item_id: int):
 async def query_parameters(pages: int = 2, size: int = 10):
     return {"Pages": pages , "Tamanho": size}
 
+class Person(BaseModel):
+    name: str
+    email: str
+    password: str
+
+class PersonOut(BaseModel):
+    name: str
+    email: str
+
+@app.post("/person", response_model=PersonOut, status_code=status.HTTP_201_CREATED,)
+async def adicionar_person(person: Person):
+    return person
+
+def get_token():
+    return '123abc'
+
+@app.get("/token", status_code=status.HTTP_200_OK)
+async def ver_token(token: str  = Depends(get_token)):
+    return {"Token": token}
+
 class User(BaseModel):
     name: str
     age: int
@@ -44,25 +64,22 @@ async def ver_user_id(user_id: int):
             return {"Usuario": i}
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario não encontrado")
 
-class Person(BaseModel):
-    name: str
-    email: str
-    password: str
+@app.put("/usuario/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def atualizar_id(user_id: int, user_atualizado: User):
+    for indice, usuario in enumerate(lista_user):
+        if usuario["Id"] == user_id:
+            new_user = {"Id": user_id, "Informações": user_atualizado}
+            lista_user[indice] = new_user
+            return
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Id não encontrado")
 
-class PersonOut(BaseModel):
-    name: str
-    email: str
-
-@app.post("/person", response_model=PersonOut, status_code=status.HTTP_201_CREATED,)
-async def adicionar_person(person: Person):
-    return person
-
-def get_token():
-    return '123abc'
-
-@app.get("/token", status_code=status.HTTP_200_OK)
-async def ver_token(token: str  = Depends(get_token)):
-    return {"Token": token}
+@app.delete("/usuario/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def atualizar_id(user_id: int):
+    for indice, usuario in enumerate(lista_user):
+        if usuario["Id"] == user_id:
+            lista_user.pop(indice)
+            return
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Id não encontrado")
 
 if __name__ == "__main__":
     import uvicorn
