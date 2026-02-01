@@ -6,6 +6,9 @@ app = FastAPI()
 async def menu():
     return {"mensagem": "Bem vindo"}
 
+@app.get("/item/{item_id}", status_code=status.HTTP_200_OK)
+async def ver_item_especifico(item_id: int):
+    return {"ID item: ": item_id}
 
 
 if __name__ == "__main__":
