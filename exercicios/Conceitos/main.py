@@ -1,4 +1,4 @@
-from fastapi import FastAPI, status
+from fastapi import FastAPI, status, HTTPException
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -24,8 +24,11 @@ lista_user = []
 
 @app.post("/usuario", status_code=status.HTTP_201_CREATED)
 async def inserir_user(user: User):
-    lista_user.append(user)
-    return {"Usuario": user}
+    if user.age > 0:
+        lista_user.append(user)
+        return {"Usuario": user}
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Idade tem que ser maior que 0")
 
 if __name__ == "__main__":
     import uvicorn
