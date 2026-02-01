@@ -21,18 +21,28 @@ class User(BaseModel):
     email: str
 
 lista_user = []
+id_users = 0
 
 @app.post("/usuario", status_code=status.HTTP_201_CREATED)
 async def inserir_user(user: User):
+    global id_users
     if user.age > 0:
-        lista_user.append(user)
-        return {"Usuario": user}
+        id_users += 1
+        lista_user.append({"Id": id_users, "Informações": user})
+        return {"ID": id_users,"Usuario": user}
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Idade tem que ser maior que 0")
 
 @app.get("/usuario", status_code=status.HTTP_200_OK)
 async def ver_users():
     return {"Usuarios": lista_user}
+
+@app.get("/usuario/{user_id}", status_code=status.HTTP_200_OK)
+async def ver_user_id(user_id: int):
+    for i in lista_user:
+        if i["Id"] == user_id:
+            return {"Usuario": i}
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario não encontrado")
 
 if __name__ == "__main__":
     import uvicorn
