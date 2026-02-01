@@ -1,4 +1,4 @@
-from fastapi import FastAPI, status, HTTPException
+from fastapi import FastAPI, status, HTTPException, Depends
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -56,6 +56,13 @@ class PersonOut(BaseModel):
 @app.post("/person", response_model=PersonOut, status_code=status.HTTP_201_CREATED,)
 async def adicionar_person(person: Person):
     return person
+
+def get_token():
+    return '123abc'
+
+@app.get("/token", status_code=status.HTTP_200_OK)
+async def ver_token(token: str  = Depends(get_token)):
+    return {"Token": token}
 
 if __name__ == "__main__":
     import uvicorn
