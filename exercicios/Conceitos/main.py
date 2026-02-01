@@ -8,8 +8,11 @@ async def menu():
 
 @app.get("/item/{item_id}", status_code=status.HTTP_200_OK)
 async def ver_item_especifico(item_id: int):
-    return {"ID item: ": item_id}
+    return {"ID item": item_id}
 
+@app.get("/item", status_code=status.HTTP_200_OK)
+async def query_parameters(pages: int = 2, size: int = 10):
+    return {"Pages": pages , "Tamanho": size}
 
 if __name__ == "__main__":
     import uvicorn
