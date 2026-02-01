@@ -1,4 +1,5 @@
 from fastapi import FastAPI, status
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -13,6 +14,18 @@ async def ver_item_especifico(item_id: int):
 @app.get("/item", status_code=status.HTTP_200_OK)
 async def query_parameters(pages: int = 2, size: int = 10):
     return {"Pages": pages , "Tamanho": size}
+
+class User(BaseModel):
+    name: str
+    age: int
+    email: str
+
+lista_user = []
+
+@app.post("/usuario", status_code=status.HTTP_201_CREATED)
+async def inserir_user(user: User):
+    lista_user.append(user)
+    return {"Usuario": user}
 
 if __name__ == "__main__":
     import uvicorn
