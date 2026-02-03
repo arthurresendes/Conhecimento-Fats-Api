@@ -1,9 +1,0 @@
-# Ambiente
-.env
-.venv
-venv
-__pycache__/
-*.pyc
-
-# Banco local (opcional: remova se quiser versionar o .db)
-*.db
